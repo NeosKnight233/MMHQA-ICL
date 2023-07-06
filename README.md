@@ -67,6 +67,8 @@ CUDA_VISIBLE_DEVICES=0,1 PYTHONPATH=$PYTHONPATH:$(pwd) python ./retriever_module
 
 ### question-answering
 
+oracle配置（使用 oracle-classifier + oracle-retriever）：
+
 ```bash
 PYTHONPATH=$PYTHONPATH:$(pwd) python ./run.py --dataset mmqa \
 --dataset_split validation \
@@ -78,6 +80,22 @@ PYTHONPATH=$PYTHONPATH:$(pwd) python ./run.py --dataset mmqa \
 --max_api_total_tokens 4200 \
 --oracle-classifier \
 --oracle-retriever \
+--retriever dpmlb
+```
+
+
+
+非 oracle 配置（使用训练的 classifier 和 retriever）
+
+```bash
+PYTHONPATH=$PYTHONPATH:$(pwd) python ./run.py --dataset mmqa \
+--dataset_split validation \
+--prompt_file templates/prompt.json \
+--n_parallel_prompts 1 \
+--n_processes 1 \
+--temperature 0.4 \
+--engine "text-davinci-003" \
+--max_api_total_tokens 4200 \
 --retriever dpmlb
 ```
 
