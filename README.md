@@ -1,30 +1,18 @@
 # MMHQA-ICL
 
-
-
 A simple approach to use LLM to solve question answering over Text, Tables and Images using in-context learning.
 
+## Modules
 
+There are a total of four modules: a question classifier, an image retriever, a text retriever, and a question-answering module.
 
-## 模块
+The question-answering module utilizes the results from the question classifier and the content retrieved from the given text and images by the image and text retrievers. It then employs a large language model to provide answers to the questions through in-context learning.
 
-一共包含四个，问题分类器，图像检索器，文本检索器，问答系统。
+## Run
 
-问答系统模块利用问题分类器的结果以及图像、文本检索器从给定的文本图像中检索到的内容，利用大模型通过 in-context learning 的方式对问题给出回答。
+Make sure to modify the dataset location in each module's `dataset.py` file.
 
-
-
-其中还有图像描述生成器（用 LLaVA 生成 image-caption ），暂时未放上来。只需将对应 image-caption 的 json 文件放到 utils 内即可（已放）。
-
-
-
-## 运行
-
-注意修改每个模块 dataset.py 中数据集位置，即 `_DATA_PATH` 
-
-`deberta-large` 权重在 [huggingface](https://huggingface.co/microsoft/deberta-v3-large/tree/main) 上下载，需放在 `ptm/deberta-large` 目录下
-
-
+Download the model weights of `deberta-large` from [huggingface](https://huggingface.co/microsoft/deberta-v3-large/tree/main) and put them in `ptm/deberta-large`.
 
 ### classifier
 
@@ -35,8 +23,6 @@ PYTHONPATH=$PYTHONPATH:$(pwd) python ./classifier_module/train.py \
 --test \
 --epoch 5
 ```
-
-
 
 ### retriever - image
 
@@ -50,8 +36,6 @@ CUDA_VISIBLE_DEVICES=0,1 PYTHONPATH=$PYTHONPATH:$(pwd) python ./retriever_module
 --epoch 20
 ```
 
-
-
 ### retriever - text
 
 ```bash
@@ -63,11 +47,9 @@ CUDA_VISIBLE_DEVICES=0,1 PYTHONPATH=$PYTHONPATH:$(pwd) python ./retriever_module
 --epoch 5
 ```
 
-
-
 ### question-answering
 
-oracle配置（使用 oracle-classifier + oracle-retriever）：
+oracle settings（oracle-classifier + oracle-retriever）：
 
 ```bash
 PYTHONPATH=$PYTHONPATH:$(pwd) python ./run.py --dataset mmqa \
@@ -84,8 +66,7 @@ PYTHONPATH=$PYTHONPATH:$(pwd) python ./run.py --dataset mmqa \
 ```
 
 
-
-非 oracle 配置（使用训练的 classifier 和 retriever）
+non-oracle settings（using trained classifier and retriever）
 
 ```bash
 PYTHONPATH=$PYTHONPATH:$(pwd) python ./run.py --dataset mmqa \
